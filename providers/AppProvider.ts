@@ -10,7 +10,7 @@ export default class AppProvider {
     /******************************** SERVICES ********************************/
     /**************************************************************************/
     const CitizenService = await import("App/Services/CitizenService");
-    const BeneficiaryService = await import("App/Services/BeneficiaryService");
+    const SapienciaService = await import("App/Services/SapienciaService");
 
     /**************************************************************************/
     /************************ EXTERNAL SERVICES ********************************/
@@ -23,8 +23,8 @@ export default class AppProvider {
       "App/Repositories/CitizenRepository"
     );
 
-    const BeneficiaryRepository = await import(
-      "App/Repositories/BeneficiaryRepository"
+    const CallPeriodRepository = await import(
+      "App/Repositories/Sapiencia/CallPeriodRepository"
     );
 
     /**************************************************************************/
@@ -36,9 +36,10 @@ export default class AppProvider {
       () => new CitizenService.default(new CitizenRepository.default())
     );
 
+
     this.app.container.singleton(
-      "core.BeneficiaryProvider",
-      () => new BeneficiaryService.default(new BeneficiaryRepository.default())
+      "core.SapienciaProvider",
+      () => new SapienciaService.default(new CallPeriodRepository.default())
     );
   }
 

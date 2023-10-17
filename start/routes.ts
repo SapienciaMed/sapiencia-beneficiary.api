@@ -24,6 +24,12 @@ Route.get("/", async () => {
   return "Api de servicios beneficiarios de SAPIENCIA";
 });
 
+
+Route.group(() => {
+  Route.get("/call-periods/get-all", "SapienciaController.getAllCallPeriod");
+}).prefix("/api/v1/sapiencia")
+
+
 Route.group(() => {
   Route.get(
     "/get-by-id/:id",
