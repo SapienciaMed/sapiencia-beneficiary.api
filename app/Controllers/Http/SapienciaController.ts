@@ -13,4 +13,34 @@ export default class SapienciaController {
       );
     }
   }
+
+  public async getAllCallModality({ response }: HttpContextContract) {
+    try {
+      return response.send(await SapienciaProvider.getAllCallModality());
+    } catch (err) {
+      response.badRequest(
+        new ApiResponse(null, EResponseCodes.FAIL, String(err))
+      );
+    }
+  }
+
+  public async getAllCallFounds({ response }: HttpContextContract) {
+    try {
+      return response.send(await SapienciaProvider.getAllCallFound());
+    } catch (err) {
+      response.badRequest(
+        new ApiResponse(null, EResponseCodes.FAIL, String(err))
+      );
+    }
+  }
+
+  public async getAllCallCreditStatus({response}:HttpContextContract){
+    try {
+      return response.send(await SapienciaProvider.getAllCallCreditStatus());
+    } catch (err) {
+      response.badRequest(
+        new ApiResponse(null, EResponseCodes.FAIL, String(err))
+      );
+    }
+  }
 }

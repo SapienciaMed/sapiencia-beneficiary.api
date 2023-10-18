@@ -26,7 +26,10 @@ Route.get("/", async () => {
 
 
 Route.group(() => {
-  Route.get("/call-periods/get-all", "SapienciaController.getAllCallPeriod");
+  Route.get("/call-data/get-all-periods", "SapienciaController.getAllCallPeriod");
+  Route.get("/call-data/get-all-modalitys", "SapienciaController.getAllCallModality");
+  Route.get("/call-data/get-all-founds", "SapienciaController.getAllCallFounds");
+  Route.get("/call-data/get-all-creditStatus", "SapienciaController.getAllCallCreditStatus");
 }).prefix("/api/v1/sapiencia")
 
 

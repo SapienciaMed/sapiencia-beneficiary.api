@@ -27,6 +27,15 @@ export default class AppProvider {
       "App/Repositories/Sapiencia/CallPeriodRepository"
     );
 
+    const CallModalityRepository = await import(
+      "App/Repositories/Sapiencia/CallModalityRepository"
+    );
+
+    const CallFoundRepository = await import(
+      "App/Repositories/Sapiencia/CallFoundRepository"
+    );
+
+    const CallCreditStatusRepository = await import ("App/Repositories/Sapiencia/CallCreditStatusRepository")
     /**************************************************************************/
     /******************************** CORE  ***********************************/
     /**************************************************************************/
@@ -36,10 +45,15 @@ export default class AppProvider {
       () => new CitizenService.default(new CitizenRepository.default())
     );
 
-
     this.app.container.singleton(
       "core.SapienciaProvider",
-      () => new SapienciaService.default(new CallPeriodRepository.default())
+      () =>
+        new SapienciaService.default(
+          new CallPeriodRepository.default(),
+          new CallModalityRepository.default(),
+          new CallFoundRepository.default(),
+          new CallCreditStatusRepository.default()
+        )
     );
   }
 
