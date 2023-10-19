@@ -1,4 +1,4 @@
 export interface ICallCreditStatus{
-    id: number;
+    value: number;
     name: string;
 }

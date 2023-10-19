@@ -1,4 +1,4 @@
 export interface ICallPeriod {
-  id: number;
+  value: number;
   name: string;
 }

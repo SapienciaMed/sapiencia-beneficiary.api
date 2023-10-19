@@ -1,4 +1,4 @@
 export interface ICallModality {
-    id: number;
+    value: number;
     name : string;
 }
