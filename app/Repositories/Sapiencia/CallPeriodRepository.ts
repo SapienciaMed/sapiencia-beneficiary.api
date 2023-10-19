@@ -10,7 +10,6 @@ export default class CallPeriodRepository implements ICallPeriodRepository {
 
   async getAllCallPeriod(): Promise<ICallPeriod[]> {
     const res = await CallPeriod.query();
-
     return res.map((i) => i.serialize() as ICallPeriod);
   }
 }
