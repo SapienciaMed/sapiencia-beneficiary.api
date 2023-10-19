@@ -9,7 +9,7 @@ export default class CallFoundRepository implements ICallFoundRepository{
     constructor(){}
 
     async getAllCallFound():Promise<ICallFound[]>{
-        const res = await CallFound.query().select('fondo').groupBy('fondo');
+        const res = await CallFound.query();
         return res.map ((i) => i.serialize() as ICallFound)
     }
 }

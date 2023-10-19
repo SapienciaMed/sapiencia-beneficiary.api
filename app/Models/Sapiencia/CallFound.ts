@@ -1,12 +1,12 @@
 import { BaseModel, column } from "@ioc:Adonis/Lucid/Orm";
 
 export default class CallFound extends BaseModel {
-  public static table = "fondos_historico";
+  public static table = "fidu_fondo";
   public static connection = "mysql_sapiencia";
 
-  @column({ isPrimary: true, columnName: "id", serializeAs: "value" })
+  @column({ isPrimary: true, columnName: "idfondo", serializeAs: "value" })
   public value: number;
 
-  @column({ columnName: "fondo", serializeAs: "found" })
+  @column({ columnName: "nombrefondo", serializeAs: "found" })
   public name: string;
 }
