@@ -7,6 +7,6 @@ export default class CallFound extends BaseModel {
   @column({ isPrimary: true, columnName: "idfondo", serializeAs: "value" })
   public value: number;
 
-  @column({ columnName: "nombrefondo", serializeAs: "found" })
+  @column({ columnName: "nombrefondo", serializeAs: "name" })
   public name: string;
 }
