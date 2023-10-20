@@ -15,17 +15,35 @@ export default class BeneficiaryRepository implements IBeneficiaryRepository {
   constructor() {}
 
   async getBeneficiaryPaginated(
-    filter: IBeneficiaryFilter
+    payload: IBeneficiaryFilter
   ): Promise<IPagingData<IBeneficiary>> {
+    const {
+      page,
+      perPage,
+      ccBeneficiary,
+      founds,
+      period,
+      modality,
+      creditStatus,
+    } = payload;
     const query = Beneficiary.query();
 
-    if (filter.document) {
-      query.where("document", filter.document);
+    if(ccBeneficiary){
+      query.where("documento",ccBeneficiary)
     }
-
-    const res = await query.paginate(filter.page, filter.perPage);
-
-    const { data, meta } = res.serialize();
+    if(founds){
+      query.where("id_fondo",founds)
+    }
+    if(period){
+      query.where("id_periodo",period)
+    }
+    if(modality){
+      query.where("tipo_modalidad",modality)
+    }
+    if(creditStatus){
+      query.where("id_estado",creditStatus)
+    }
+    const { data, meta } = (await query.paginate(page,perPage)).serialize();
 
     return {
       array: data as IBeneficiary[],

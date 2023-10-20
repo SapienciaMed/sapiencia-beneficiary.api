@@ -1,30 +1,27 @@
 import { BaseModel, column } from "@ioc:Adonis/Lucid/Orm";
 
 export default class Beneficiary extends BaseModel {
-  public static table = "Vista-desconocinda";
+  public static table = "DataAurora";
   public static connection = "mysql_sapiencia";
 
-  @column({ isPrimary: true, columnName: "id", serializeAs: "value" })
-  public value: number;
-
-  @column({ columnName: "nombre", serializeAs: "fullName" })
+  @column({ columnName: "nombreCompleto", serializeAs: "fullName" })
   public fullName: string;
 
-  @column({ columnName: "tipoDocumento", serializeAs: "typeDocument" })
+  @column({ columnName: "TipoDocumento", serializeAs: "typeDocument" })
   public typeDocument: string;
 
   @column({ columnName: "documento", serializeAs: "document" })
   public document: number;
 
   @column({ columnName: "fondo", serializeAs: "found" })
-  public found: number;
+  public found: string;
 
-  @column({ columnName: "periodo", serializeAs: "period" })
-  public period: number;
+  @column({ columnName: "periodo_convocatoria", serializeAs: "period" })
+  public period: string;
 
-  @column({ columnName: "modalidad", serializeAs: "modality" })
-  public modality: number;
+  @column({ columnName: "Modalidad", serializeAs: "modality" })
+  public modality: string;
 
-  @column({ columnName: "estado de credito", serializeAs: "creditStatus" })
-  public creditStatus: number;
+  @column({ columnName: "estado_credito", serializeAs: "creditStatus" })
+  public creditStatus: string;
 }

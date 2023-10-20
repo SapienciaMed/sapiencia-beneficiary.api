@@ -1,24 +1,23 @@
+import { IDataPaginateFilters } from "App/Utils/ApiResponses";
+
 export interface IBeneficiary {
-  id: number;
   typeDocument: string;
   document: number;
   fullName: string;
-  found: number;
-  period: number;
-  modality: number;
-  creditStatus: number;
+  found: string;
+  period: string;
+  modality: string;
+  creditStatus: string;
 }
 
 
 
 
-export interface IBeneficiaryFilter {
-    page: number,
-    perPage: number,
-    document?: string,
-    foundId?: number
-    callPeriodId?: number
-    modalityId?: number
-    creditStatusId?: number
+export interface IBeneficiaryFilter extends IDataPaginateFilters{
+    ccBeneficiary?: number,
+    founds?: number
+    period?: number
+    modality?: number
+    creditStatus?: number
   }
   

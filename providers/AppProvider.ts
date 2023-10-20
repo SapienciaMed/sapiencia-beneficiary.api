@@ -11,7 +11,7 @@ export default class AppProvider {
     /**************************************************************************/
     const CitizenService = await import("App/Services/CitizenService");
     const SapienciaService = await import("App/Services/SapienciaService");
-
+    const BeneficiaryService = await import("App/Services/BeneficiaryService");
     /**************************************************************************/
     /************************ EXTERNAL SERVICES ********************************/
     /**************************************************************************/
@@ -35,7 +35,13 @@ export default class AppProvider {
       "App/Repositories/Sapiencia/CallFoundRepository"
     );
 
-    const CallCreditStatusRepository = await import ("App/Repositories/Sapiencia/CallCreditStatusRepository")
+    const CallCreditStatusRepository = await import(
+      "App/Repositories/Sapiencia/CallCreditStatusRepository"
+    );
+
+    const BeneficiaryRepository = await import(
+      "App/Repositories/BeneficiaryRepository"
+    );
     /**************************************************************************/
     /******************************** CORE  ***********************************/
     /**************************************************************************/
@@ -54,6 +60,11 @@ export default class AppProvider {
           new CallFoundRepository.default(),
           new CallCreditStatusRepository.default()
         )
+    );
+
+    this.app.container.singleton(
+      "core.BeneficiaryProvider",
+      () => new BeneficiaryService.default(new BeneficiaryRepository.default())
     );
   }
 
