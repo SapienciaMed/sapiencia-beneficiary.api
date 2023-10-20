@@ -30,11 +30,9 @@ Route.group(() => {
   Route.get("/call-data/get-all-modalitys", "SapienciaController.getAllCallModality");
   Route.get("/call-data/get-all-founds", "SapienciaController.getAllCallFounds");
   Route.get("/call-data/get-all-creditStatus", "SapienciaController.getAllCallCreditStatus");
-}).prefix("/api/v1/sapiencia")
-
-Route.group(()=>{
   Route.post("/beneficiary/get-all-paginated","BeneficiaryController.getBeneficiaryPaginated")
 }).prefix("/api/v1/sapiencia")
+
 
 
 Route.group(() => {
