@@ -1,5 +1,4 @@
 import { HttpContext } from "@adonisjs/core/build/standalone";
-import type { HttpContextContract } from "@ioc:Adonis/Core/HttpContext";
 import BeneficiaryProvider from "@ioc:core.BeneficiaryProvider";
 import { EResponseCodes } from "App/Constants/ResponseCodesEnum";
 import { IBeneficiaryFilter } from "App/Interfaces/BeneficiaryInterfaces";
