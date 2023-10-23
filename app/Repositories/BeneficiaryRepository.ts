@@ -1,14 +1,22 @@
 import {
+  IAttentions,
+  IAttentionsFilter,
   IBeneficiary,
   IBeneficiaryFilter,
+  IPQRSDF,
+  IPQRSDFFilter,
 } from "App/Interfaces/BeneficiaryInterfaces";
 import Beneficiary from "App/Models/Sapiencia/Beneficiary";
+import PQRSDFModel from "App/Models/Sapiencia/PQRSDF";
+import Attentions from "App/Models/Sapiencia/PQRSDF";
 import { IPagingData } from "App/Utils/ApiResponses";
 
 export interface IBeneficiaryRepository {
   getBeneficiaryPaginated(
     filter: IBeneficiaryFilter
   ): Promise<IPagingData<IBeneficiary>>;
+  getPQRSDFPaginated(filter: IPQRSDFFilter): Promise<IPagingData<IPQRSDF>>;
+  getAttentionsPaginated (filter:IAttentionsFilter): Promise <IPagingData<IAttentions>>;
 }
 
 export default class BeneficiaryRepository implements IBeneficiaryRepository {
@@ -28,26 +36,61 @@ export default class BeneficiaryRepository implements IBeneficiaryRepository {
     } = payload;
     const query = Beneficiary.query();
 
-    if(ccBeneficiary){
-      query.where("documento",ccBeneficiary)
+    if (ccBeneficiary) {
+      query.where("documento", ccBeneficiary);
     }
-    if(founds){
-      query.where("id_fondo",founds)
+    if (founds) {
+      query.where("id_fondo", founds);
     }
-    if(period){
-      query.where("id_periodo",period)
+    if (period) {
+      query.where("id_periodo", period);
     }
-    if(modality){
-      query.where("tipo_modalidad",modality)
+    if (modality) {
+      query.where("tipo_modalidad", modality);
     }
-    if(creditStatus){
-      query.where("id_estado",creditStatus)
+    if (creditStatus) {
+      query.where("id_estado", creditStatus);
     }
-    const { data, meta } = (await query.paginate(page,perPage)).serialize();
+    const { data, meta } = (await query.paginate(page, perPage)).serialize();
 
     return {
       array: data as IBeneficiary[],
       meta,
     };
+  }
+
+  async getPQRSDFPaginated(
+    payload: IPQRSDFFilter
+  ): Promise<IPagingData<IPQRSDF>> {
+    const { page, perPage , PQRSDF,Subject,Program} = payload;
+
+    const query = PQRSDFModel.query()
+    
+
+    if(PQRSDF){
+
+    }
+    if(Subject){
+
+    }
+    if(Program){}
+    const { data, meta } = (await query.paginate(page, perPage)).serialize();
+
+    return {array:data as IPQRSDF[],meta };
+  }
+
+  async getAttentionsPaginated (
+    payload:IAttentionsFilter
+  ): Promise <IPagingData<IAttentions>>{
+    const {page, perPage ,registrationDate,program } = payload;
+
+    const query = Attentions.query()
+
+    if(registrationDate){}
+    if(program){}
+    const { data, meta } = (await query.paginate(page, perPage)).serialize();
+
+    return {array:data as IAttentions[],meta };
+
   }
 }

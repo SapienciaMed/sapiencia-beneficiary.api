@@ -26,12 +26,17 @@ Route.get("/", async () => {
 
 
 Route.group(() => {
-  Route.get("/call-data/get-all-periods", "SapienciaController.getAllCallPeriod");
-  Route.get("/call-data/get-all-modalitys", "SapienciaController.getAllCallModality");
-  Route.get("/call-data/get-all-founds", "SapienciaController.getAllCallFounds");
-  Route.get("/call-data/get-all-creditStatus", "SapienciaController.getAllCallCreditStatus");
-  Route.post("/beneficiary/get-all-paginated","BeneficiaryController.getBeneficiaryPaginated")
-}).prefix("/api/v1/sapiencia")
+  Route.get("/get-all-periods", "SapienciaController.getAllCallPeriod");
+  Route.get("/get-all-modalitys", "SapienciaController.getAllCallModality");
+  Route.get("/get-all-founds", "SapienciaController.getAllCallFounds");
+  Route.get("/get-all-creditStatus", "SapienciaController.getAllCallCreditStatus");
+}).prefix("/api/v1/sapiencia/call-data")
+
+Route.group(()=>{
+  Route.post("/get-all-paginated","BeneficiaryController.getBeneficiaryPaginated")
+  Route.post("/getPQRSDF","BeneficiaryController.getPQRSDFPaginated")
+  Route.post("/getAttentions","BeneficiaryController.getAttentionsPaginated")
+}).prefix("/api/v1/sapiencia/beneficiary")
 
 
 
