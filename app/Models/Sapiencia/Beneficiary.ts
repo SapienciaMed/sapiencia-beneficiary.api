@@ -7,9 +7,6 @@ export default class Beneficiary extends BaseModel {
   @column({ columnName: "nombreCompleto", serializeAs: "fullName" })
   public fullName: string;
 
-  @column({ columnName: "TipoDocumento", serializeAs: "typeDocument" })
-  public typeDocument: string;
-
   @column({ columnName: "documento", serializeAs: "document" })
   public document: number;
 

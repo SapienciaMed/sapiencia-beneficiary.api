@@ -2,7 +2,6 @@ import { IDataPaginateFilters } from "App/Utils/ApiResponses";
 import { DateTime } from "luxon";
 
 export interface IBeneficiary {
-  typeDocument: string;
   document: number;
   fullName: string;
   found: string;
