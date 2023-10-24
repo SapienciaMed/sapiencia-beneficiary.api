@@ -20,10 +20,28 @@ export interface IBenficiaryService {
   getAttentionsPaginated(
     payload: IAttentionsFilter
   ): Promise<ApiResponse<IPagingData<IAttentions>>>;
+  getBeneficiaryByDocument(
+    document: string,
+    foundId: number,
+    modalityType: number
+  ): Promise<ApiResponse<Array<any>>>;
 }
 
 export default class BeneficiaryService implements IBenficiaryService {
   constructor(private beneficiaryRepository: BeneficiaryRepository) {}
+
+  async getBeneficiaryByDocument(
+    document: string,
+    foundId: number,
+    modalityType: number
+  ): Promise<ApiResponse<Array<any>>> {
+    const res = await this.beneficiaryRepository.getBeneficiaryByDocument(
+      document,
+      foundId,
+      modalityType
+    );
+    return new ApiResponse(res, EResponseCodes.OK);
+  }
 
   public async getAllBeneficiarysPaginated(payload: IBeneficiaryFilter) {
     const res = await this.beneficiaryRepository.getBeneficiaryPaginated(
@@ -37,7 +55,9 @@ export default class BeneficiaryService implements IBenficiaryService {
     return new ApiResponse(res, EResponseCodes.OK);
   }
   public async getAttentionsPaginated(payload: IAttentionsFilter) {
-    const res = await this.beneficiaryRepository.getAttentionsPaginated(payload);
+    const res = await this.beneficiaryRepository.getAttentionsPaginated(
+      payload
+    );
     return new ApiResponse(res, EResponseCodes.OK);
   }
 }

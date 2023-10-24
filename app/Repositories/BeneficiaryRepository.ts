@@ -1,3 +1,4 @@
+import Database from "@ioc:Adonis/Lucid/Database";
 import {
   IAttentions,
   IAttentionsFilter,
@@ -16,11 +17,32 @@ export interface IBeneficiaryRepository {
     filter: IBeneficiaryFilter
   ): Promise<IPagingData<IBeneficiary>>;
   getPQRSDFPaginated(filter: IPQRSDFFilter): Promise<IPagingData<IPQRSDF>>;
-  getAttentionsPaginated (filter:IAttentionsFilter): Promise <IPagingData<IAttentions>>;
+  getAttentionsPaginated(
+    filter: IAttentionsFilter
+  ): Promise<IPagingData<IAttentions>>;
+  getBeneficiaryByDocument(
+    document: string,
+    foundId: number,
+    modalityType: number
+  ): Promise<Array<any>>;
 }
 
 export default class BeneficiaryRepository implements IBeneficiaryRepository {
   constructor() {}
+
+  async getBeneficiaryByDocument(
+    document: string,
+    foundId: number,
+    _modalityType: number
+  ): Promise<Array<any>> {
+    const res = await Database.connection("mysql_sapiencia").rawQuery(
+      `call infoBeneficiario (${document}, ${foundId})`
+    );
+
+    console.log(res);
+
+    return [];
+  }
 
   async getBeneficiaryPaginated(
     payload: IBeneficiaryFilter
@@ -62,35 +84,34 @@ export default class BeneficiaryRepository implements IBeneficiaryRepository {
   async getPQRSDFPaginated(
     payload: IPQRSDFFilter
   ): Promise<IPagingData<IPQRSDF>> {
-    const { page, perPage , PQRSDF,Subject,Program} = payload;
+    const { page, perPage, PQRSDF, Subject, Program } = payload;
 
-    const query = PQRSDFModel.query()
-    
+    const query = PQRSDFModel.query();
 
-    if(PQRSDF){
-
+    if (PQRSDF) {
     }
-    if(Subject){
-
+    if (Subject) {
     }
-    if(Program){}
+    if (Program) {
+    }
     const { data, meta } = (await query.paginate(page, perPage)).serialize();
 
-    return {array:data as IPQRSDF[],meta };
+    return { array: data as IPQRSDF[], meta };
   }
 
-  async getAttentionsPaginated (
-    payload:IAttentionsFilter
-  ): Promise <IPagingData<IAttentions>>{
-    const {page, perPage ,registrationDate,program } = payload;
+  async getAttentionsPaginated(
+    payload: IAttentionsFilter
+  ): Promise<IPagingData<IAttentions>> {
+    const { page, perPage, registrationDate, program } = payload;
 
-    const query = Attentions.query()
+    const query = Attentions.query();
 
-    if(registrationDate){}
-    if(program){}
+    if (registrationDate) {
+    }
+    if (program) {
+    }
     const { data, meta } = (await query.paginate(page, perPage)).serialize();
 
-    return {array:data as IAttentions[],meta };
-
+    return { array: data as IAttentions[], meta };
   }
 }
