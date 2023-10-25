@@ -8,6 +8,7 @@ export interface IBeneficiary {
   period: string;
   modality: string;
   creditStatus: string;
+  foundID:number;
 }
 
 export interface IBeneficiaryFilter extends IDataPaginateFilters {

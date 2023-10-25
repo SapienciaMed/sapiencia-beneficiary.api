@@ -21,4 +21,7 @@ export default class Beneficiary extends BaseModel {
 
   @column({ columnName: "estado_credito", serializeAs: "creditStatus" })
   public creditStatus: string;
+
+  @column({ columnName: "id_fondo", serializeAs: "foundID" })
+  public foundID: number;
 }
