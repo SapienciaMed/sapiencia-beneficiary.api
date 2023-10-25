@@ -36,6 +36,7 @@ Route.group(()=>{
   Route.post("/get-all-paginated","BeneficiaryController.getBeneficiaryPaginated")
   Route.post("/getPQRSDF","BeneficiaryController.getPQRSDFPaginated")
   Route.post("/getAttentions","BeneficiaryController.getAttentionsPaginated")
+  Route.post("/get-by-document","BeneficiaryController.getBeneficiaryByDocument")
 }).prefix("/api/v1/sapiencia/beneficiary")
 
 

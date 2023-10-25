@@ -1,5 +1,6 @@
 import { EResponseCodes } from "App/Constants/ResponseCodesEnum";
 import {
+  BeneficiaryInfo,
   IAttentions,
   IAttentionsFilter,
   IBeneficiary,
@@ -20,6 +21,10 @@ export interface IBenficiaryService {
   getAttentionsPaginated(
     payload: IAttentionsFilter
   ): Promise<ApiResponse<IPagingData<IAttentions>>>;
+  getBeneficiaryByDocument(
+    document: string,
+    foundId: number,
+  ): Promise<ApiResponse<BeneficiaryInfo>>;
 }
 
 export default class BeneficiaryService implements IBenficiaryService {
@@ -32,6 +37,16 @@ export default class BeneficiaryService implements IBenficiaryService {
     return new ApiResponse(res, EResponseCodes.OK);
   }
 
+  async getBeneficiaryByDocument(
+    document: string,
+    foundId: number,
+  ): Promise<ApiResponse<BeneficiaryInfo>> {
+    const res = await this.beneficiaryRepository.getBeneficiaryByDocument(
+      document,
+      foundId,
+    );
+    return new ApiResponse(res, EResponseCodes.OK);
+  }
   public async getPQRSDFPaginated(payload: IPQRSDFFilter) {
     const res = await this.beneficiaryRepository.getPQRSDFPaginated(payload);
     return new ApiResponse(res, EResponseCodes.OK);

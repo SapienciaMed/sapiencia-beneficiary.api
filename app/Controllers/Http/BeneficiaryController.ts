@@ -27,8 +27,23 @@ export default class BeneficiaryController {
     }
   }
 
+  public async getBeneficiaryByDocument(ctx: HttpContext) {
+    const {request,response,logger} = ctx
+
+    try {
+        const {document, foundId} = request.body()
+        const beneficiaryFound = await BeneficiaryProvider.getBeneficiaryByDocument(document,foundId)
+        return response.ok (beneficiaryFound)
+    } catch (err) {
+        logger.error(err);
+        const apiResp = new ApiResponse(null, EResponseCodes.FAIL, err.message);
+        return response.badRequest(apiResp);
+    }
+  }
+
   public async getPQRSDFPaginated (ctx:HttpContext){
     const {request,response,logger} = ctx
+
     let payload : IPQRSDFFilter
     try{
         payload = await request.validate({schema : filterPQRSDFSchema})

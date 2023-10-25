@@ -1,4 +1,7 @@
+import Database from "@ioc:Adonis/Lucid/Database";
+import { DATABASE_ERRORS } from "App/Constants/DatabaseErrors";
 import {
+  BeneficiaryInfo,
   IAttentions,
   IAttentionsFilter,
   IBeneficiary,
@@ -16,7 +19,13 @@ export interface IBeneficiaryRepository {
     filter: IBeneficiaryFilter
   ): Promise<IPagingData<IBeneficiary>>;
   getPQRSDFPaginated(filter: IPQRSDFFilter): Promise<IPagingData<IPQRSDF>>;
-  getAttentionsPaginated (filter:IAttentionsFilter): Promise <IPagingData<IAttentions>>;
+  getAttentionsPaginated(
+    filter: IAttentionsFilter
+  ): Promise<IPagingData<IAttentions>>;
+  getBeneficiaryByDocument(
+    document: string,
+    foundId: number
+  ): Promise<BeneficiaryInfo>;
 }
 
 export default class BeneficiaryRepository implements IBeneficiaryRepository {
@@ -62,35 +71,51 @@ export default class BeneficiaryRepository implements IBeneficiaryRepository {
   async getPQRSDFPaginated(
     payload: IPQRSDFFilter
   ): Promise<IPagingData<IPQRSDF>> {
-    const { page, perPage , PQRSDF,Subject,Program} = payload;
+    const { page, perPage, PQRSDF, Subject, Program } = payload;
 
-    const query = PQRSDFModel.query()
-    
+    const query = PQRSDFModel.query();
 
-    if(PQRSDF){
-
+    if (PQRSDF) {
     }
-    if(Subject){
-
+    if (Subject) {
     }
-    if(Program){}
+    if (Program) {
+    }
     const { data, meta } = (await query.paginate(page, perPage)).serialize();
 
-    return {array:data as IPQRSDF[],meta };
+    return { array: data as IPQRSDF[], meta };
   }
 
-  async getAttentionsPaginated (
-    payload:IAttentionsFilter
-  ): Promise <IPagingData<IAttentions>>{
-    const {page, perPage ,registrationDate,program } = payload;
+  async getBeneficiaryByDocument(document: string, foundId: number) {
+    try {
+      return await Database.connection("mysql_sapiencia").rawQuery(
+        "call infoBeneficiario (:Documento, :FondoId)",
+        {
+          Documento: document,
+          FondoId: foundId,
+        }
+      );
+    } catch (err) {
+      if (err.message?.includes(DATABASE_ERRORS.E_ROW_NOT_FOUND)) {
+        throw new Error("No existen datos del  Beneficiario");
+      }
+      throw new Error(err);
+    }
+  }
 
-    const query = Attentions.query()
+  async getAttentionsPaginated(
+    payload: IAttentionsFilter
+  ): Promise<IPagingData<IAttentions>> {
+    const { page, perPage, registrationDate, program } = payload;
 
-    if(registrationDate){}
-    if(program){}
+    const query = Attentions.query();
+
+    if (registrationDate) {
+    }
+    if (program) {
+    }
     const { data, meta } = (await query.paginate(page, perPage)).serialize();
 
-    return {array:data as IAttentions[],meta };
-
+    return { array: data as IAttentions[], meta };
   }
 }
