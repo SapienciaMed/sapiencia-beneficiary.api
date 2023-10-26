@@ -45,6 +45,7 @@ export default class BeneficiaryRepository implements IBeneficiaryRepository {
     } = payload;
     const query = Beneficiary.query();
 
+    console.log(payload)
     if (ccBeneficiary) {
       query.where("documento", ccBeneficiary);
     }
@@ -57,7 +58,7 @@ export default class BeneficiaryRepository implements IBeneficiaryRepository {
     if (modality) {
       query.where("tipo_modalidad", modality);
     }
-    if (creditStatus) {
+    if (creditStatus != null || creditStatus != undefined) {
       query.where("id_estado", creditStatus);
     }
     const { data, meta } = (await query.paginate(page, perPage)).serialize();
