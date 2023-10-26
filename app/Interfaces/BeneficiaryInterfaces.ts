@@ -9,6 +9,8 @@ export interface IBeneficiary {
   modality: string;
   creditStatus: string;
   foundID:number;
+  page?: number;
+  perPage?: number;
 }
 
 export interface IBeneficiaryFilter extends IDataPaginateFilters {

@@ -86,6 +86,7 @@ export default class BeneficiaryRepository implements IBeneficiaryRepository {
     return { array: data as IPQRSDF[], meta };
   }
 
+
   async getBeneficiaryByDocument(document: string, foundId: number) {
     try {
       return await Database.connection("mysql_sapiencia").rawQuery(
