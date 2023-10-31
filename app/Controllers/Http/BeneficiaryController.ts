@@ -6,7 +6,6 @@ import {
   IAttentionsFilter,
   IBeneficiaryFilter,
   IBenefitsFilter,
-  IPQRSDFFilter,
 } from "App/Interfaces/BeneficiaryInterfaces";
 import { IPqrsdfFilters } from "App/Interfaces/CitizenAttentionInterfaces";
 import { ApiResponse } from "App/Utils/ApiResponses";
