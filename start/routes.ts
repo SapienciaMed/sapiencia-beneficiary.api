@@ -32,12 +32,13 @@ Route.group(() => {
   Route.get("/get-all-creditStatus", "SapienciaController.getAllCallCreditStatus");
 }).prefix("/api/v1/sapiencia/call-data")
 
-Route.group(()=>{
-  Route.post("/get-all-paginated","BeneficiaryController.getBeneficiaryPaginated")
-  Route.post("/getPQRSDF","BeneficiaryController.getPQRSDFPaginated")
-  Route.post("/getAttentions","BeneficiaryController.getAttentionsPaginated")
-  Route.post("/get-by-document","BeneficiaryController.getBeneficiaryByDocument")
-  Route.get("/generate-xlsx","BeneficiaryController.generateXLSX")
+Route.group(() => {
+  Route.post("/get-all-paginated", "BeneficiaryController.getBeneficiaryPaginated")
+  Route.post("/getPQRSDF", "BeneficiaryController.getPQRSDFPaginated")
+  Route.post("/getAttentions", "BeneficiaryController.getAttentionsPaginated")
+  Route.post("/getBenefits", "BeneficiaryController.getBeneftisPaginated")
+  Route.post("/get-by-document", "BeneficiaryController.getBeneficiaryByDocument")
+  Route.get("/generate-xlsx", "BeneficiaryController.generateXLSX")
 }).prefix("/api/v1/sapiencia/beneficiary")
 
 

@@ -8,7 +8,7 @@ export interface IBeneficiary {
   period: string;
   modality: string;
   creditStatus: string;
-  foundID:number;
+  foundID: number;
   page?: number;
   perPage?: number;
 }
@@ -81,4 +81,20 @@ export interface BeneficiaryInfo {
   Dir_empresa_deudor: string;
   Tel_empresa_deudor: string;
   Salario_deudor;
+}
+
+
+export interface IBenefitsFilter extends IDataPaginateFilters {
+  document: number;
+  foundID: number;
+}
+
+export interface IBenefits {
+  Legalization_period: string;
+  status: string;
+  OrderEnrollment: string;
+  OrderSustenance: string;
+  TotalOrder: string;
+  StatusOrder: string;
+  DateOrder: string;
 }

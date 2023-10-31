@@ -6,10 +6,13 @@ import {
   IAttentionsFilter,
   IBeneficiary,
   IBeneficiaryFilter,
+  IBenefits,
+  IBenefitsFilter,
   IPQRSDF,
   IPQRSDFFilter,
 } from "App/Interfaces/BeneficiaryInterfaces";
 import Beneficiary from "App/Models/Sapiencia/Beneficiary";
+import BenefitsBeneficiary from "App/Models/Sapiencia/Benefits";
 import PQRSDFModel from "App/Models/Sapiencia/PQRSDF";
 import Attentions from "App/Models/Sapiencia/PQRSDF";
 import { IPagingData } from "App/Utils/ApiResponses";
@@ -26,10 +29,11 @@ export interface IBeneficiaryRepository {
     document: string,
     foundId: number
   ): Promise<BeneficiaryInfo>;
+  getBeneftisPaginated(filter: IBenefitsFilter): Promise<IPagingData<IBenefits>>
 }
 
 export default class BeneficiaryRepository implements IBeneficiaryRepository {
-  constructor() {}
+  constructor() { }
 
   async getBeneficiaryPaginated(
     payload: IBeneficiaryFilter
@@ -44,8 +48,6 @@ export default class BeneficiaryRepository implements IBeneficiaryRepository {
       creditStatus,
     } = payload;
     const query = Beneficiary.query();
-
-    console.log(payload)
     if (ccBeneficiary) {
       query.where("documento", ccBeneficiary);
     }
@@ -119,5 +121,25 @@ export default class BeneficiaryRepository implements IBeneficiaryRepository {
     const { data, meta } = (await query.paginate(page, perPage)).serialize();
 
     return { array: data as IAttentions[], meta };
+  }
+
+  async getBeneftisPaginated(payload: IBenefitsFilter) {
+    const { page, perPage, document, foundID } = payload
+    const query = BenefitsBeneficiary.query();
+
+
+    if (document) {
+      query.where("documento_beneficiario", document)
+    }
+    if (foundID) {
+      query.where("id_fondo", foundID)
+    }
+
+    const { data, meta } = (await query.paginate(page, perPage)).serialize()
+
+    return {
+      array: data as IBenefits[],
+      meta,
+    }
   }
 }

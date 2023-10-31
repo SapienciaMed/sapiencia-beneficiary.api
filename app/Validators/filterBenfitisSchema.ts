@@ -1,7 +1,8 @@
 import { rules, schema } from "@ioc:Adonis/Core/Validator";
 
-export const filterPQRSDFSchema = schema.create({
+export const filterBenfitsSchema = schema.create({
     page: schema.number([rules.required(), rules.unsigned()]),
     perPage: schema.number([rules.required(), rules.unsigned()]),
-    identification: schema.string(),
+    document: schema.number(),
+    foundID: schema.number(),
 })

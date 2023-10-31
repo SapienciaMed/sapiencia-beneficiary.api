@@ -5,12 +5,15 @@ import { EResponseCodes } from "App/Constants/ResponseCodesEnum";
 import {
   IAttentionsFilter,
   IBeneficiaryFilter,
+  IBenefitsFilter,
   IPQRSDFFilter,
 } from "App/Interfaces/BeneficiaryInterfaces";
+import { IPqrsdfFilters } from "App/Interfaces/CitizenAttentionInterfaces";
 import { ApiResponse } from "App/Utils/ApiResponses";
 import { DBException } from "App/Utils/DbHandlerError";
 import { filterAttentionsSchema } from "App/Validators/filterAttentionsSchema";
 import { filtersBeneficiarySchema } from "App/Validators/filterBeneficiarySchema";
+import { filterBenfitsSchema } from "App/Validators/filterBenfitisSchema";
 import { filterPQRSDFSchema } from "App/Validators/filterPQRSDFSchema";
 
 export default class BeneficiaryController {
@@ -59,12 +62,12 @@ export default class BeneficiaryController {
     }
 
     try {
-        const resp = await BeneficiaryProvider.generateXLSXBeneficiary(filters)
-        response.header(
-          "Content-Disposition",
-          "attachment; filename=Beneficiarios.xlsx"
-        )
-        return response.download(resp.data)
+      const resp = await BeneficiaryProvider.generateXLSXBeneficiary(filters)
+      response.header(
+        "Content-Disposition",
+        "attachment; filename=Beneficiarios.xlsx"
+      )
+      return response.download(resp.data)
     } catch (err) {
       logger.error(err);
       const apiResp = new ApiResponse(null, EResponseCodes.FAIL, err.message);
@@ -74,14 +77,14 @@ export default class BeneficiaryController {
   public async getPQRSDFPaginated(ctx: HttpContext) {
     const { request, response, logger } = ctx;
 
-    let payload: IPQRSDFFilter;
+    let payload: IPqrsdfFilters;
     try {
       payload = await request.validate({ schema: filterPQRSDFSchema });
     } catch (err) {
       return DBException.badRequest(ctx, err);
     }
     try {
-      const PQRSDFFound = await BeneficiaryProvider.getPQRSDFPaginated(payload);
+      const PQRSDFFound = await BeneficiaryProvider.getPqrsdfPaginated(payload);
       return response.ok(PQRSDFFound);
     } catch (err) {
       logger.error(err);
@@ -103,6 +106,26 @@ export default class BeneficiaryController {
         payload
       );
       return response.ok(AttentionsFound);
+    } catch (err) {
+      logger.error(err);
+      const apiResp = new ApiResponse(null, EResponseCodes.FAIL, err.message);
+      return response.badRequest(apiResp);
+    }
+  }
+
+  public async getBeneftisPaginated(ctx: HttpContextContract) {
+    const { request, response, logger } = ctx;
+    let payload: IBenefitsFilter
+    try {
+      payload = await request.validate({ schema: filterBenfitsSchema });
+    } catch (err) {
+      return DBException.badRequest(ctx, err);
+    }
+
+    try {
+      const BenefitsBeneficiary = await BeneficiaryProvider.getBeneftisPaginated(payload);
+      console.log(BenefitsBeneficiary)
+      return response.ok(BenefitsBeneficiary)
     } catch (err) {
       logger.error(err);
       const apiResp = new ApiResponse(null, EResponseCodes.FAIL, err.message);
