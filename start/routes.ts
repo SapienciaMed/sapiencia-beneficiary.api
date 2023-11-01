@@ -34,20 +34,17 @@ Route.group(() => {
 
 Route.group(() => {
   Route.post("/get-all-paginated", "BeneficiaryController.getBeneficiaryPaginated")
-  Route.post("/getPQRSDF", "BeneficiaryController.getPQRSDFPaginated")
+  Route.post("/pqrsdf/get-paginated", "BeneficiaryController.getPqrsdfPaginated")
   Route.post("/getAttentions", "BeneficiaryController.getAttentionsPaginated")
   Route.post("/getBenefits", "BeneficiaryController.getBeneftisPaginated")
   Route.post("/get-by-document", "BeneficiaryController.getBeneficiaryByDocument")
   Route.get("/generate-xlsx", "BeneficiaryController.generateXLSX")
-}).prefix("/api/v1/sapiencia/beneficiary")
+}).prefix("/api/v1/sapiencia/beneficiary").middleware("auth")
 
 
 
 Route.group(() => {
-  Route.get(
-    "/get-by-id/:id",
-    "CitizenController.getCitizenById"
-  );
+
   Route.get("/get-by-parent", "CitizenController.getCitizenByAdditionalField");
   Route.get("/get-by-ids", "CitizenController.getCitizenByIds");
 }).prefix("/api/v1/generic-list");

@@ -8,20 +8,16 @@ import {
   IBeneficiaryFilter,
   IBenefits,
   IBenefitsFilter,
-  IPQRSDF,
-  IPQRSDFFilter,
 } from "App/Interfaces/BeneficiaryInterfaces";
+import Attentions from "App/Models/Sapiencia/Attentions";
 import Beneficiary from "App/Models/Sapiencia/Beneficiary";
 import BenefitsBeneficiary from "App/Models/Sapiencia/Benefits";
-import PQRSDFModel from "App/Models/Sapiencia/PQRSDF";
-import Attentions from "App/Models/Sapiencia/PQRSDF";
 import { IPagingData } from "App/Utils/ApiResponses";
 
 export interface IBeneficiaryRepository {
   getBeneficiaryPaginated(
     filter: IBeneficiaryFilter
   ): Promise<IPagingData<IBeneficiary>>;
-  getPQRSDFPaginated(filter: IPQRSDFFilter): Promise<IPagingData<IPQRSDF>>;
   getAttentionsPaginated(
     filter: IAttentionsFilter
   ): Promise<IPagingData<IAttentions>>;
@@ -69,24 +65,6 @@ export default class BeneficiaryRepository implements IBeneficiaryRepository {
       array: data as IBeneficiary[],
       meta,
     };
-  }
-
-  async getPQRSDFPaginated(
-    payload: IPQRSDFFilter
-  ): Promise<IPagingData<IPQRSDF>> {
-    const { page, perPage, PQRSDF, Subject, Program } = payload;
-
-    const query = PQRSDFModel.query();
-
-    if (PQRSDF) {
-    }
-    if (Subject) {
-    }
-    if (Program) {
-    }
-    const { data, meta } = (await query.paginate(page, perPage)).serialize();
-
-    return { array: data as IPQRSDF[], meta };
   }
 
 

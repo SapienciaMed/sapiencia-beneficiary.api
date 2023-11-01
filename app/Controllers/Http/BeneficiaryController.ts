@@ -73,7 +73,8 @@ export default class BeneficiaryController {
       return response.badRequest(apiResp);
     }
   }
-  public async getPQRSDFPaginated(ctx: HttpContext) {
+
+  public async getPqrsdfPaginated(ctx: HttpContext) {
     const { request, response, logger } = ctx;
 
     let payload: IPqrsdfFilters;
@@ -83,8 +84,8 @@ export default class BeneficiaryController {
       return DBException.badRequest(ctx, err);
     }
     try {
-      const PQRSDFFound = await BeneficiaryProvider.getPqrsdfPaginated(payload);
-      return response.ok(PQRSDFFound);
+      const res = await BeneficiaryProvider.getPqrsdfPaginated(payload);
+      return response.ok(res);
     } catch (err) {
       logger.error(err);
       const apiResp = new ApiResponse(null, EResponseCodes.FAIL, err.message);

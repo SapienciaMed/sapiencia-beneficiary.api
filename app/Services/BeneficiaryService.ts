@@ -8,22 +8,20 @@ import {
   IBeneficiaryFilter,
   IBenefits,
   IBenefitsFilter,
-  IPQRSDF,
-  IPQRSDFFilter,
 } from "App/Interfaces/BeneficiaryInterfaces";
-import { IPqrsdf, IPqrsdfFilters } from "App/Interfaces/CitizenAttentionInterfaces";
+import {
+  IPqrsdf,
+  IPqrsdfFilters,
+} from "App/Interfaces/CitizenAttentionInterfaces";
 import BeneficiaryRepository from "App/Repositories/BeneficiaryRepository";
 import { ApiResponse, IPagingData } from "App/Utils/ApiResponses";
 import { generateXLSX } from "App/Utils/generateXLSX";
-import axios, { AxiosInstance } from "axios";
+import { ICitizenAttentionService } from "./External/CitizenAttentionService";
 
 export interface IBenficiaryService {
   getAllBeneficiarysPaginated(
     payload: IBeneficiaryFilter
   ): Promise<ApiResponse<IPagingData<IBeneficiary>>>;
-  getPQRSDFPaginated(
-    payload: IPQRSDFFilter
-  ): Promise<ApiResponse<IPagingData<IPQRSDF>>>;
   getAttentionsPaginated(
     payload: IAttentionsFilter
   ): Promise<ApiResponse<IPagingData<IAttentions>>>;
@@ -31,23 +29,22 @@ export interface IBenficiaryService {
     document: string,
     foundId: number
   ): Promise<ApiResponse<BeneficiaryInfo>>;
-  generateXLSXBeneficiary(filer: IBeneficiaryFilter
+  generateXLSXBeneficiary(
+    filer: IBeneficiaryFilter
   ): Promise<ApiResponse<string>>;
-
   getPqrsdfPaginated(
     filters: IPqrsdfFilters
   ): Promise<ApiResponse<IPagingData<IPqrsdf>>>;
-
-  getBeneftisPaginated(filters: IBenefitsFilter): Promise<ApiResponse<IPagingData<IBenefits>>>
+  getBeneftisPaginated(
+    filters: IBenefitsFilter
+  ): Promise<ApiResponse<IPagingData<IBenefits>>>;
 }
 
 export default class BeneficiaryService implements IBenficiaryService {
-  private axiosInstance: AxiosInstance;
-  constructor(private beneficiaryRepository: BeneficiaryRepository) {
-    this.axiosInstance = axios.create({
-      baseURL: process.env.URL_API_CITIZEN_ATTENTION,
-    });
-  }
+  constructor(
+    private beneficiaryRepository: BeneficiaryRepository,
+    private citizenAttentionService: ICitizenAttentionService
+  ) {}
 
   public async getAllBeneficiarysPaginated(payload: IBeneficiaryFilter) {
     const res = await this.beneficiaryRepository.getBeneficiaryPaginated(
@@ -67,7 +64,7 @@ export default class BeneficiaryService implements IBenficiaryService {
     return new ApiResponse(res, EResponseCodes.OK);
   }
 
-  async generateXLSXBeneficiary(filter: IBeneficiaryFilter) {
+  public async generateXLSXBeneficiary(filter: IBeneficiaryFilter) {
     const beneficiary =
       await this.beneficiaryRepository.getBeneficiaryPaginated(filter);
 
@@ -122,10 +119,12 @@ export default class BeneficiaryService implements IBenficiaryService {
     return new ApiResponse(filePath, EResponseCodes.OK);
   }
 
-  public async getPQRSDFPaginated(payload: IPQRSDFFilter) {
-    const res = await this.beneficiaryRepository.getPQRSDFPaginated(payload);
-    return new ApiResponse(res, EResponseCodes.OK);
+  public async getPqrsdfPaginated(
+    filters: IPqrsdfFilters
+  ): Promise<ApiResponse<IPagingData<IPqrsdf>>> {
+    return await this.citizenAttentionService.getPqrsdfPaginated(filters);
   }
+
   public async getAttentionsPaginated(payload: IAttentionsFilter) {
     const res = await this.beneficiaryRepository.getAttentionsPaginated(
       payload
@@ -133,34 +132,8 @@ export default class BeneficiaryService implements IBenficiaryService {
     return new ApiResponse(res, EResponseCodes.OK);
   }
 
-  public async getPqrsdfPaginated(
-    filters: IPqrsdfFilters
-  ): Promise<ApiResponse<IPagingData<IPqrsdf>>> {
-    const urlConsumer = `/api/v1/pqrsdf/get-paginated`;
-
-    try {
-      const res = await this.axiosInstance.post<
-        ApiResponse<IPagingData<IPqrsdf>>
-      >(urlConsumer, filters, {
-        headers: {
-          Authorization: process.env.CURRENT_AUTHORIZATION,
-        },
-      });
-
-      console.log(res);
-
-      return res.data;
-    } catch (error) {
-      return new ApiResponse(
-        { array: [], meta: { total: 0 } },
-        EResponseCodes.FAIL,
-        String(error)
-      );
-    }
-  }
-
   public async getBeneftisPaginated(payload: IBenefitsFilter) {
-    const res = await this.beneficiaryRepository.getBeneftisPaginated(payload)
-    return new ApiResponse(res, EResponseCodes.OK)
+    const res = await this.beneficiaryRepository.getBeneftisPaginated(payload);
+    return new ApiResponse(res, EResponseCodes.OK);
   }
 }
