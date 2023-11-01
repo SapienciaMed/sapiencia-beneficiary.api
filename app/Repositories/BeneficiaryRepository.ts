@@ -124,15 +124,15 @@ export default class BeneficiaryRepository implements IBeneficiaryRepository {
   }
 
   async getBeneftisPaginated(payload: IBenefitsFilter) {
-    const { page, perPage, document, foundID } = payload
+    const { page, perPage, document, foundId } = payload
     const query = BenefitsBeneficiary.query();
 
 
     if (document) {
       query.where("documento_beneficiario", document)
     }
-    if (foundID) {
-      query.where("id_fondo", foundID)
+    if (foundId) {
+      query.where("id_fondo", foundId)
     }
 
     const { data, meta } = (await query.paginate(page, perPage)).serialize()
