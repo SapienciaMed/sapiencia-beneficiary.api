@@ -86,7 +86,7 @@ export interface BeneficiaryInfo {
 
 export interface IBenefitsFilter extends IDataPaginateFilters {
   document: number;
-  foundID: number;
+  foundId: number;
 }
 
 export interface IBenefits {

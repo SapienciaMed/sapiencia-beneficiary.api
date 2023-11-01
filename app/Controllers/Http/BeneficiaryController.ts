@@ -123,7 +123,6 @@ export default class BeneficiaryController {
 
     try {
       const BenefitsBeneficiary = await BeneficiaryProvider.getBeneftisPaginated(payload);
-      console.log(BenefitsBeneficiary)
       return response.ok(BenefitsBeneficiary)
     } catch (err) {
       logger.error(err);
