@@ -10,11 +10,11 @@ export interface ICitizenAttentionService {
   getPqrsdfPaginated(
     filters: IPqrsdfFilters
   ): Promise<ApiResponse<IPagingData<IPqrsdf>>>;
+  getPrograms(): Promise<ApiResponse<any>>
 }
 
 export default class CitizenAttentionService
-  implements ICitizenAttentionService
-{
+  implements ICitizenAttentionService {
   private axiosInstance: AxiosInstance;
 
   constructor() {
@@ -36,7 +36,25 @@ export default class CitizenAttentionService
           Authorization: process.env.CURRENT_AUTHORIZATION,
         },
       });
+      return res.data;
+    } catch (error) {
+      return new ApiResponse(
+        { array: [], meta: { total: 0 } },
+        EResponseCodes.FAIL,
+        String(error)
+      );
+    }
+  }
 
+  public async getPrograms(): Promise<ApiResponse<any>> {
+    const urlConsumer = "/get-Programs"
+
+    try {
+      const res = await this.axiosInstance.get<ApiResponse<any>>(urlConsumer, {
+        headers: {
+          Authorization: process.env.CURRENT_AUTHORIZATION,
+        },
+      })
       return res.data;
     } catch (error) {
       return new ApiResponse(

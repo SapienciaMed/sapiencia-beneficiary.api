@@ -1,4 +1,5 @@
 import { BaseModel, column } from "@ioc:Adonis/Lucid/Orm";
+import { DateTime } from "luxon";
 
 export default class BenefitsBeneficiary extends BaseModel {
     public static table = "giro_vwbeneficiario_proyec_renova_giro";
@@ -17,5 +18,5 @@ export default class BenefitsBeneficiary extends BaseModel {
     @column({ columnName: "perido_legalizacion", serializeAs: "StatusOrder" })
     public StatusOrder: string;
     @column({ columnName: "fecharegistro", serializeAs: "DateOrder" })
-    public DateOrder: string;
+    public DateOrder: DateTime;
 }

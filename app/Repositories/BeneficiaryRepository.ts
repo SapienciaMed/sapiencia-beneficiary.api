@@ -11,7 +11,7 @@ import {
 } from "App/Interfaces/BeneficiaryInterfaces";
 import Attentions from "App/Models/Sapiencia/Attentions";
 import Beneficiary from "App/Models/Sapiencia/Beneficiary";
-import BenefitsBeneficiary from "App/Models/Sapiencia/Benefits";
+import BenefitsBeneficiary from "App/Models/Sapiencia/Benefits/Benefits";
 import { IPagingData } from "App/Utils/ApiResponses";
 
 export interface IBeneficiaryRepository {
@@ -102,7 +102,7 @@ export default class BeneficiaryRepository implements IBeneficiaryRepository {
   }
 
   async getBeneftisPaginated(payload: IBenefitsFilter) {
-    const { page, perPage, document, foundId } = payload
+    const { page, perPage, document, foundId, modalityId } = payload
     const query = BenefitsBeneficiary.query();
 
 
@@ -112,6 +112,9 @@ export default class BeneficiaryRepository implements IBeneficiaryRepository {
     if (foundId) {
       query.where("id_fondo", foundId)
     }
+    if (modalityId) {
+      query.where("tipo_modalidad", modalityId)
+    }
 
     const { data, meta } = (await query.paginate(page, perPage)).serialize()
 
@@ -120,4 +123,10 @@ export default class BeneficiaryRepository implements IBeneficiaryRepository {
       meta,
     }
   }
+
+  // async getSocialServices(payload:ISocialServicesFound){
+  //   const {document, foundId} = payload;
+
+  //   const query = 
+  // }
 }

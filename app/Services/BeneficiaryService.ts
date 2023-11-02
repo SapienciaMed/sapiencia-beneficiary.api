@@ -8,6 +8,7 @@ import {
   IBeneficiaryFilter,
   IBenefits,
   IBenefitsFilter,
+
 } from "App/Interfaces/BeneficiaryInterfaces";
 import {
   IPqrsdf,
@@ -38,13 +39,17 @@ export interface IBenficiaryService {
   getBeneftisPaginated(
     filters: IBenefitsFilter
   ): Promise<ApiResponse<IPagingData<IBenefits>>>;
+
+  // getSocialServices(payload: ISocialServicesFound): Promise<ApiResponse<ISocialServices>>
+
+  getPrograms(): Promise<ApiResponse<any>>
 }
 
 export default class BeneficiaryService implements IBenficiaryService {
   constructor(
     private beneficiaryRepository: BeneficiaryRepository,
     private citizenAttentionService: ICitizenAttentionService
-  ) {}
+  ) { }
 
   public async getAllBeneficiarysPaginated(payload: IBeneficiaryFilter) {
     const res = await this.beneficiaryRepository.getBeneficiaryPaginated(
@@ -135,5 +140,14 @@ export default class BeneficiaryService implements IBenficiaryService {
   public async getBeneftisPaginated(payload: IBenefitsFilter) {
     const res = await this.beneficiaryRepository.getBeneftisPaginated(payload);
     return new ApiResponse(res, EResponseCodes.OK);
+  }
+
+  // public async getSocialServices(payload: ISocialServicesFound) {
+  //   const res = await this.beneficiaryRepository
+  //   return new ApiResponse(res, EResponseCodes.OK)
+  // }
+
+  public async getPrograms(): Promise<ApiResponse<any>> {
+    return await this.citizenAttentionService.getPrograms()
   }
 }

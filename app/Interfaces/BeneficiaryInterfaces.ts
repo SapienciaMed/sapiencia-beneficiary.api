@@ -86,7 +86,8 @@ export interface BeneficiaryInfo {
 
 export interface IBenefitsFilter extends IDataPaginateFilters {
   document: number;
-  foundId: number;
+  foundId?: number;
+  modalityId?: number;
 }
 
 export interface IBenefits {
@@ -97,4 +98,14 @@ export interface IBenefits {
   TotalOrder: string;
   StatusOrder: string;
   DateOrder: string;
+}
+
+export interface ISocialServicesFound {
+  document: string;
+  foundId: number;
+  periodId: number
+}
+
+export interface ISocialServices {
+
 }

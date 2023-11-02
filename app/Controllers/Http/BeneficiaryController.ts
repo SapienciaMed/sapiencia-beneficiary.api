@@ -131,4 +131,33 @@ export default class BeneficiaryController {
       return response.badRequest(apiResp);
     }
   }
+
+  // public async getSocialServices(ctx: HttpContextContract) {
+  //   const { request, response, logger } = ctx;
+  //   let payload: ISocialServicesFound
+  //   try {
+  //     payload = await request.validate({ schema: socialServicesSchema });
+  //   } catch (err) {
+  //     return DBException.badRequest(ctx, err);
+  //   }
+
+  //   try {
+  //     const BenefitsBeneficiary = await BeneficiaryProvider.getSocialServices(payload);
+  //     return response.ok(BenefitsBeneficiary)
+  //   } catch (err) {
+  //     logger.error(err);
+  //     const apiResp = new ApiResponse(null, EResponseCodes.FAIL, err.message);
+  //     return response.badRequest(apiResp);
+  //   }
+  // }
+
+  public async getProgramas({ response }: HttpContextContract) {
+    try {
+      return response.send(await BeneficiaryProvider.getPrograms());
+    } catch (err) {
+      response.badRequest(
+        new ApiResponse(null, EResponseCodes.FAIL, String(err))
+      );
+    }
+  }
 }
