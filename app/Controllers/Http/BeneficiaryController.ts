@@ -6,10 +6,12 @@ import {
   IAttentionsFilter,
   IBeneficiaryFilter,
   IBenefitsFilter,
+  // ISocialServicesFound,
 } from "App/Interfaces/BeneficiaryInterfaces";
 import { IPqrsdfFilters } from "App/Interfaces/CitizenAttentionInterfaces";
 import { ApiResponse } from "App/Utils/ApiResponses";
 import { DBException } from "App/Utils/DbHandlerError";
+// import { socialServicesSchema } from "App/Validators/SocialServicesSchemas";
 import { filterAttentionsSchema } from "App/Validators/filterAttentionsSchema";
 import { filtersBeneficiarySchema } from "App/Validators/filterBeneficiarySchema";
 import { filterBenfitsSchema } from "App/Validators/filterBenfitisSchema";

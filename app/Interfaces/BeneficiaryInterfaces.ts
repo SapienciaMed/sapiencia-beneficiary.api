@@ -98,6 +98,7 @@ export interface IBenefits {
   TotalOrder: string;
   StatusOrder: string;
   DateOrder: string;
+  calculatePeriod: string
 }
 
 export interface ISocialServicesFound {

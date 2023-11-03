@@ -17,6 +17,8 @@ export default class BenefitsBeneficiary extends BaseModel {
     public TotalOrder: string;
     @column({ columnName: "perido_legalizacion", serializeAs: "StatusOrder" })
     public StatusOrder: string;
+    @column({ columnName: "periodo_calculado", serializeAs: "calculatePeriod" })
+    public calculatePeriod: string;
     @column({ columnName: "fecharegistro", serializeAs: "DateOrder" })
     public DateOrder: DateTime;
 }
