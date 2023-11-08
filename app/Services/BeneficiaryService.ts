@@ -8,7 +8,7 @@ import {
   IBeneficiaryFilter,
   IBenefits,
   IBenefitsFilter,
-  ISocialServicesFound,
+  // ISocialServicesFound,
   ISocialServices,
 
 } from "App/Interfaces/BeneficiaryInterfaces";
