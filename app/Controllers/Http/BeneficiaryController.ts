@@ -90,7 +90,7 @@ export default class BeneficiaryController {
       const res = await BeneficiaryProvider.getPqrsdfPaginated(payload);
 
       res.data.array.forEach(element => {
-        element.createdAt = DateTime.fromISO(element.createdAt).toLocaleString(
+        element.createdAt = DateTime.fromISO(element.createdAt).setLocale('fr').toLocaleString(
           DateTime.DATE_SHORT
         );
       });
