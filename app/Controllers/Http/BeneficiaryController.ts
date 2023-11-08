@@ -91,7 +91,7 @@ export default class BeneficiaryController {
 
       res.data.array.forEach(element => {
         element.createdAt = DateTime.fromISO(element.createdAt).toLocaleString(
-          DateTime.DATETIME_SHORT_WITH_SECONDS
+          DateTime.DATE_SHORT
         );
       });
       return response.ok(res);
