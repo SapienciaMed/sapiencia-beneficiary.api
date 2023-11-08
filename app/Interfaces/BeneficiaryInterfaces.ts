@@ -91,14 +91,19 @@ export interface IBenefitsFilter extends IDataPaginateFilters {
 }
 
 export interface IBenefits {
-  Legalization_period: string;
-  status: string;
-  OrderEnrollment: string;
-  OrderSustenance: string;
-  TotalOrder: string;
-  StatusOrder: string;
-  DateOrder: string;
-  calculatePeriod: string
+  id_found: number;
+  id_modality: number;
+  PeriodCalculateProjection: string;
+  ProjectionEnrollment: string;
+  ProjectionSustenance: string;
+  TotalProjection: string;
+  calculatePeriod: number;
+  calculatePeriodName: string
+  OrderEnrollment: string
+  OrderSustenance: string
+  OrderTotal: string
+  statusCredit: string
+  DateOrder: DateTime
 }
 
 export interface ISocialServicesFound {

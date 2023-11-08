@@ -6,16 +6,17 @@ import {
   IAttentionsFilter,
   IBeneficiaryFilter,
   IBenefitsFilter,
-  // ISocialServicesFound,
+  ISocialServicesFound,
 } from "App/Interfaces/BeneficiaryInterfaces";
 import { IPqrsdfFilters } from "App/Interfaces/CitizenAttentionInterfaces";
 import { ApiResponse } from "App/Utils/ApiResponses";
 import { DBException } from "App/Utils/DbHandlerError";
-// import { socialServicesSchema } from "App/Validators/SocialServicesSchemas";
+import { socialServicesSchema } from "App/Validators/SocialServicesSchemas";
 import { filterAttentionsSchema } from "App/Validators/filterAttentionsSchema";
 import { filtersBeneficiarySchema } from "App/Validators/filterBeneficiarySchema";
 import { filterBenfitsSchema } from "App/Validators/filterBenfitisSchema";
 import { filterPQRSDFSchema } from "App/Validators/filterPQRSDFSchema";
+import { DateTime } from "luxon";
 
 export default class BeneficiaryController {
   public async getBeneficiaryPaginated(ctx: HttpContext) {
@@ -87,6 +88,12 @@ export default class BeneficiaryController {
     }
     try {
       const res = await BeneficiaryProvider.getPqrsdfPaginated(payload);
+
+      res.data.array.forEach(element => {
+        element.createdAt = DateTime.fromISO(element.createdAt).toLocaleString(
+          DateTime.DATETIME_SHORT_WITH_SECONDS
+        );
+      });
       return response.ok(res);
     } catch (err) {
       logger.error(err);
@@ -134,24 +141,18 @@ export default class BeneficiaryController {
     }
   }
 
-  // public async getSocialServices(ctx: HttpContextContract) {
-  //   const { request, response, logger } = ctx;
-  //   let payload: ISocialServicesFound
-  //   try {
-  //     payload = await request.validate({ schema: socialServicesSchema });
-  //   } catch (err) {
-  //     return DBException.badRequest(ctx, err);
-  //   }
-
-  //   try {
-  //     const BenefitsBeneficiary = await BeneficiaryProvider.getSocialServices(payload);
-  //     return response.ok(BenefitsBeneficiary)
-  //   } catch (err) {
-  //     logger.error(err);
-  //     const apiResp = new ApiResponse(null, EResponseCodes.FAIL, err.message);
-  //     return response.badRequest(apiResp);
-  //   }
-  // }
+  public async getSocialServices(ctx: HttpContext) {
+    const { request, response, logger } = ctx;
+    const { document, foundId, periodId } = request.body();
+    try {
+      const BenefitsBeneficiary = await BeneficiaryProvider.getSocialServices(document, foundId, periodId);
+      return response.ok(BenefitsBeneficiary)
+    } catch (err) {
+      logger.error(err);
+      const apiResp = new ApiResponse(null, EResponseCodes.FAIL, err.message);
+      return response.badRequest(apiResp);
+    }
+  }
 
   public async getProgramas({ response }: HttpContextContract) {
     try {

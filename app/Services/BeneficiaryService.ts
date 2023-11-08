@@ -8,8 +8,8 @@ import {
   IBeneficiaryFilter,
   IBenefits,
   IBenefitsFilter,
-  // ISocialServices,
-  // ISocialServicesFound,
+  ISocialServicesFound,
+  ISocialServices,
 
 } from "App/Interfaces/BeneficiaryInterfaces";
 import {
@@ -42,7 +42,11 @@ export interface IBenficiaryService {
     filters: IBenefitsFilter
   ): Promise<ApiResponse<IPagingData<IBenefits>>>;
 
-  // getSocialServices(payload: ISocialServicesFound): Promise<ApiResponse<ISocialServices>>
+  getSocialServices(
+    document: string,
+    foundId: number,
+    periodId: number
+  ): Promise<ApiResponse<ISocialServices>>
 
   getPrograms(): Promise<ApiResponse<any>>
 }
@@ -144,10 +148,12 @@ export default class BeneficiaryService implements IBenficiaryService {
     return new ApiResponse(res, EResponseCodes.OK);
   }
 
-  // public async getSocialServices(payload: ISocialServicesFound) {
-  //   const res = await this.beneficiaryRepository
-  //   return new ApiResponse(res, EResponseCodes.OK)
-  // }
+  public async getSocialServices(document: string,
+    foundId: number,
+    periodId: number) {
+    const res = await this.beneficiaryRepository.getSocialServices(document, foundId, periodId)
+    return new ApiResponse(res, EResponseCodes.OK)
+  }
 
   public async getPrograms(): Promise<ApiResponse<any>> {
     return await this.citizenAttentionService.getPrograms()

@@ -124,9 +124,21 @@ export default class BeneficiaryRepository implements IBeneficiaryRepository {
     }
   }
 
-  // async getSocialServices(payload:ISocialServicesFound){
-  //   const {document, foundId} = payload;
-
-  //   const query = 
-  // }
+  async getSocialServices(document: string, foundId: number, periodId: number) {
+    try {
+      return await Database.connection("mysql_sapiencia").rawQuery(
+        "call AuroraServicioSocialBeneficiarios (:Documento,:PeriodoId ,:FondoId)",
+        {
+          Documento: document,
+          PeriodoId: periodId,
+          FondoId: foundId,
+        }
+      );
+    } catch (err) {
+      if (err.message?.includes(DATABASE_ERRORS.E_ROW_NOT_FOUND)) {
+        throw new Error("No existen datos del  Beneficiario");
+      }
+      throw new Error(err);
+    }
+  }
 }
