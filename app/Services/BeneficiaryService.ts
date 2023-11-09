@@ -49,6 +49,7 @@ export interface IBenficiaryService {
   ): Promise<ApiResponse<ISocialServices>>
 
   getPrograms(): Promise<ApiResponse<any>>
+  generateXLSXPqrsdf(filters: IPqrsdfFilters): Promise<ApiResponse<any>>
 }
 
 export default class BeneficiaryService implements IBenficiaryService {
@@ -126,6 +127,60 @@ export default class BeneficiaryService implements IBenficiaryService {
       data,
       filePath,
       worksheetName: "Beneficiario",
+    });
+    return new ApiResponse(filePath, EResponseCodes.OK);
+  }
+
+  public async generateXLSXPqrsdf(filters: IPqrsdfFilters) {
+    const pqrsdf = await this.citizenAttentionService.getPqrsdfPaginated(filters);
+
+    const columns = [
+      {
+        name: "ID",
+        size: 15,
+      },
+      {
+        name: "No.PQRSDF",
+        size: 30,
+      },
+      {
+        name: "Fecha radicado",
+        size: 30,
+      },
+      {
+        name: "Programa",
+        size: 15,
+      },
+      {
+        name: "Asunto",
+        size: 15,
+      },
+      {
+        name: "Estado",
+        size: 15,
+      },
+    ];
+
+    const data = pqrsdf.data.array.reduce((prev, curr) => {
+      return [
+        ...prev,
+        [
+          String(curr.id),
+          String(curr.filingNumber),
+          String(curr.createdAt),
+          String(curr.program!.prg_descripcion),
+          String(curr.requestSubject!.aso_asunto),
+          String(curr.status!.lep_estado),
+        ],
+      ];
+    }, []);
+
+    const filePath = Application.tmpPath("/PQRSDF.xlsx");
+    await generateXLSX({
+      columns,
+      data,
+      filePath,
+      worksheetName: "PQRSDF",
     });
     return new ApiResponse(filePath, EResponseCodes.OK);
   }

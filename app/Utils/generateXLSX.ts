@@ -25,7 +25,7 @@ export const generateXLSX = (config: IGenerateXLSX) => {
     });
     // WRITE DATA IN EXCEL FILE
     let rowIndex = 2;
-    data.forEach((rowData) => {
+    data!.forEach((rowData) => {
       let columnIndex = 1;
       rowData.forEach((item) => {
         worksheet.cell(rowIndex, columnIndex++).string(item);

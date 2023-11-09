@@ -90,7 +90,7 @@ export default class BeneficiaryController {
       const res = await BeneficiaryProvider.getPqrsdfPaginated(payload);
 
       res.data.array.forEach(element => {
-        element.createdAt = DateTime.fromISO(element.createdAt).setLocale('fr').toLocaleString(
+        element.createdAt = DateTime.fromISO(element.createdAt!).setLocale('fr').toLocaleString(
           DateTime.DATE_SHORT
         );
       });
@@ -161,6 +161,29 @@ export default class BeneficiaryController {
       response.badRequest(
         new ApiResponse(null, EResponseCodes.FAIL, String(err))
       );
+    }
+  }
+
+  public async generateXLSXPQRSDF(ctx: HttpContextContract) {
+    const { request, response, logger } = ctx;
+    let payload: IPqrsdfFilters;
+    try {
+      payload = await request.validate({ schema: filterPQRSDFSchema });
+    } catch (err) {
+      return DBException.badRequest(ctx, err);
+    }
+
+    try {
+      const resp = await BeneficiaryProvider.generateXLSXPqrsdf(payload)
+      response.header(
+        "Content-Disposition",
+        "attachment; filename=PQRSDF.xlsx"
+      )
+      return response.download(resp.data)
+    } catch (err) {
+      logger.error(err);
+      const apiResp = new ApiResponse(null, EResponseCodes.FAIL, err.message);
+      return response.badRequest(apiResp);
     }
   }
 }
