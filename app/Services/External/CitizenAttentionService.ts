@@ -6,6 +6,7 @@ import {
 import { IPagingData, ApiResponse } from "App/Utils/ApiResponses";
 import axios, { AxiosInstance } from "axios";
 
+
 export interface ICitizenAttentionService {
   getPqrsdfPaginated(
     filters: IPqrsdfFilters
@@ -33,7 +34,10 @@ export default class CitizenAttentionService
         ApiResponse<IPagingData<IPqrsdf>>
       >(urlConsumer, filters, {
         headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
           Authorization: process.env.CURRENT_AUTHORIZATION,
+          // permissions: Env.get("CURRENT_PERMISSIONS"),
         },
       });
       return res.data;

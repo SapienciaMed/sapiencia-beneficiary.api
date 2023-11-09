@@ -11,6 +11,8 @@ export default class BenefitsBeneficiary extends BaseModel {
     public id_modality: number;
     @column({ columnName: "Periodo_calculado_proyectado", serializeAs: "PeriodCalculateProjection" })
     public PeriodCalculateProjection: string;
+    @column({ columnName: "numero_semestre_proyectado", serializeAs: "NumberPeriodCalculateProjection" })
+    public NumberPeriodCalculateProjection: string;
     @column({ columnName: "valor_proeyctado_matricula", serializeAs: "ProjectionEnrollment" })
     public ProjectionEnrollment: string;
     @column({ columnName: "valor_proeyctado_sosteneimiento", serializeAs: "ProjectionSustenance" })

@@ -94,6 +94,7 @@ export interface IBenefits {
   id_found: number;
   id_modality: number;
   PeriodCalculateProjection: string;
+  NumberPeriodCalculateProjection: string;
   ProjectionEnrollment: string;
   ProjectionSustenance: string;
   TotalProjection: string;
