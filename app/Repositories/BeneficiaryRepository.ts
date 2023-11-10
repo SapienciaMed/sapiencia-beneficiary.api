@@ -127,11 +127,11 @@ export default class BeneficiaryRepository implements IBeneficiaryRepository {
   async getSocialServices(document: string, foundId: number, periodId: number) {
     try {
       return await Database.connection("mysql_sapiencia").rawQuery(
-        "call AuroraServicioSocialBeneficiarios (:Documento,:PeriodoId ,:FondoId)",
+        "call AuroraServicioSocialBeneficiarios (:FondoId,:Documento,:PeriodoId)",
         {
+          FondoId: foundId,
           Documento: document,
           PeriodoId: periodId,
-          FondoId: foundId,
         }
       );
     } catch (err) {
