@@ -37,9 +37,12 @@ Route.group(() => {
   Route.post("/getAttentions", "BeneficiaryController.getAttentionsPaginated")
   Route.post("/getBenefits", "BeneficiaryController.getBeneftisPaginated")
   Route.post("/get-by-document", "BeneficiaryController.getBeneficiaryByDocument")
-  Route.get("/generate-xlsx", "BeneficiaryController.generateXLSX")
   Route.post("/get-socialServices", "BeneficiaryController.getSocialServices")
 }).prefix("/api/v1/sapiencia/beneficiary").middleware("auth")
+
+Route.group(() => {
+  Route.get("/generate-xlsx", "BeneficiaryController.generateXLSX")
+}).prefix("/api/v1/sapiencia/beneficiary")
 
 Route.group(() => {
   Route.get("/getPrograms", "BeneficiaryController.getProgramas")
