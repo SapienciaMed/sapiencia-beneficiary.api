@@ -51,6 +51,10 @@ Route.group(() => {
 }).prefix("/api/v1/sapiencia/external/citizenAttentions").middleware("auth")
 
 
+Route.group(() => {
+  Route.post("/getProgramsByUser", "ExternalController.getProgramByUser")
+  Route.post("/getSubjectByUser", "ExternalController.getSubjectByUser")
+}).prefix('/api/v1/external')
 
 Route.group(() => {
 
