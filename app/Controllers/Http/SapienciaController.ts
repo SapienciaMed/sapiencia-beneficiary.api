@@ -34,7 +34,7 @@ export default class SapienciaController {
     }
   }
 
-  public async getAllCallCreditStatus({response}:HttpContextContract){
+  public async getAllCallCreditStatus({ response }: HttpContextContract) {
     try {
       return response.send(await SapienciaProvider.getAllCallCreditStatus());
     } catch (err) {

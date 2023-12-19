@@ -1,7 +1,7 @@
 import type { ApplicationContract } from "@ioc:Adonis/Core/Application";
 
 export default class AppProvider {
-  constructor(protected app: ApplicationContract) {}
+  constructor(protected app: ApplicationContract) { }
 
   public async register() {
     // Register your own bindings
@@ -12,11 +12,13 @@ export default class AppProvider {
     const CitizenService = await import("App/Services/CitizenService");
     const SapienciaService = await import("App/Services/SapienciaService");
     const BeneficiaryService = await import("App/Services/BeneficiaryService");
+    const HistoricalService = await import("App/Services/HistoricalServices")
+    const ExternalService = await import('App/Services/ExternalServices')
     /**************************************************************************/
     /************************ EXTERNAL SERVICES ********************************/
     /**************************************************************************/
 
-    const CitizenAttentionService = await import("App/Services/External/CitizenAttentionService"); 
+    const CitizenAttentionService = await import("App/Services/External/CitizenAttentionService");
 
     /**************************************************************************/
     /******************************** REPOSITORIES ****************************/
@@ -44,6 +46,10 @@ export default class AppProvider {
     const BeneficiaryRepository = await import(
       "App/Repositories/BeneficiaryRepository"
     );
+
+    const ExternalRepository = await import("App/Repositories/ExternalRepository")
+
+    const HistoricalRepository = await import("App/Repositories/HistoricalRepository")
     /**************************************************************************/
     /******************************** CORE  ***********************************/
     /**************************************************************************/
@@ -68,6 +74,10 @@ export default class AppProvider {
       "core.BeneficiaryProvider",
       () => new BeneficiaryService.default(new BeneficiaryRepository.default(), new CitizenAttentionService.default())
     );
+
+    this.app.container.singleton("core.ExternalProvider", () => new ExternalService.default(new ExternalRepository.default()))
+
+    this.app.container.singleton("core.HistoricalProvider", () => new HistoricalService.default(new HistoricalRepository.default()))
   }
 
   public async boot() {
