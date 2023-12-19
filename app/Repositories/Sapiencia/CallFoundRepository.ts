@@ -18,8 +18,7 @@ export default class CallFoundRepository implements ICallFoundRepository {
     async getFoundByUser(document: string): Promise<ICallFound[]> {
         const query = `SELECT DISTINCT (id_fondo) AS value ,nombrefondo AS name FROM giro_vwbeneficiario_proyec_renova_giro WHERE documento_beneficiario = "${document}"`
         const result = await Database.connection('mysql_sapiencia').rawQuery(query)
-        const data = result[0][0]
-
+        const data = result[0]
         return data
     }
 }
