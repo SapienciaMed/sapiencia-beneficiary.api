@@ -1,3 +1,4 @@
+import { HttpContext } from "@adonisjs/core/build/standalone";
 import type { HttpContextContract } from "@ioc:Adonis/Core/HttpContext";
 import SapienciaProvider from "@ioc:core.SapienciaProvider";
 import { EResponseCodes } from "App/Constants/ResponseCodesEnum";
@@ -41,6 +42,20 @@ export default class SapienciaController {
       response.badRequest(
         new ApiResponse(null, EResponseCodes.FAIL, String(err))
       );
+    }
+  }
+
+  public async getFoundByUser(cxt: HttpContext) {
+    const { request, response, logger } = cxt;
+    const { document } = request.body();
+
+    try {
+      const getFound = await SapienciaProvider.getFoundByUser(document)
+      return response.ok(getFound)
+    } catch (err) {
+      logger.error(err);
+      const apiResp = new ApiResponse(null, EResponseCodes.FAIL, err.message);
+      return response.badRequest(apiResp);
     }
   }
 }

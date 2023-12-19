@@ -13,7 +13,8 @@ export interface ISapienciaService {
   getAllCallPeriod(): Promise<ApiResponse<ICallPeriod[]>>;
   getAllCallModality(): Promise<ApiResponse<ICallModality[]>>;
   getAllCallFound(): Promise<ApiResponse<ICallFound[]>>;
-  getAllCallCreditStatus():Promise<ApiResponse<ICallCreditStatus[]>>;
+  getFoundByUser(documente: string): Promise<ApiResponse<ICallFound[]>>;
+  getAllCallCreditStatus(): Promise<ApiResponse<ICallCreditStatus[]>>;
 }
 
 export default class SapienciaService implements ISapienciaService {
@@ -22,7 +23,7 @@ export default class SapienciaService implements ISapienciaService {
     private callModalityRepository: ICallModalityRepository,
     private callFoundRepository: ICallFoundRepository,
     private callCreditStatusRepository: ICallCreditStatusRepository
-  ) {}
+  ) { }
 
   async getAllCallPeriod(): Promise<ApiResponse<ICallPeriod[]>> {
     const res = await this.callPeriodRepository.getAllCallPeriod();
@@ -39,8 +40,13 @@ export default class SapienciaService implements ISapienciaService {
     return new ApiResponse(res, EResponseCodes.OK);
   }
 
-  async getAllCallCreditStatus(): Promise <ApiResponse<ICallCreditStatus[]>>{
+  async getAllCallCreditStatus(): Promise<ApiResponse<ICallCreditStatus[]>> {
     const res = await this.callCreditStatusRepository.getAllCallCreditStatus()
     return new ApiResponse(res, EResponseCodes.OK)
+  }
+
+  async getFoundByUser(document: string): Promise<ApiResponse<ICallFound[]>> {
+    const res = await this.callFoundRepository.getFoundByUser(document);
+    return new ApiResponse(res, EResponseCodes.OK);
   }
 }
