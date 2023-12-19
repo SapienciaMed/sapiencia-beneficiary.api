@@ -30,6 +30,7 @@ Route.group(() => {
   Route.get("/get-all-modalitys", "SapienciaController.getAllCallModality");
   Route.get("/get-all-founds", "SapienciaController.getAllCallFounds");
   Route.get("/get-all-creditStatus", "SapienciaController.getAllCallCreditStatus");
+  Route.post("/get-all-foundByUser", "SapienciaController.getFoundByUser");
 }).prefix("/api/v1/sapiencia/call-data")
 
 Route.group(() => {
