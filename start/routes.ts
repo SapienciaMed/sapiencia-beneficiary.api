@@ -49,6 +49,7 @@ Route.group(() => {
   Route.get("/getPrograms", "BeneficiaryController.getProgramas")
   Route.post("/pqrsdf/get-paginated", "BeneficiaryController.getPqrsdfPaginated")
   Route.get("/pqrsdfXLSX", "BeneficiaryController.generateXLSXPQRSDF")
+  Route.post("/pqrsdf/get-responses", "BeneficiaryController.getResponsesPQRSDF")
 }).prefix("/api/v1/sapiencia/external/citizenAttentions").middleware("auth")
 
 

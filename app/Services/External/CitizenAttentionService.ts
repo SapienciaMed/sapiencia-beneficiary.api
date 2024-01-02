@@ -2,20 +2,24 @@ import { EResponseCodes } from "App/Constants/ResponseCodesEnum";
 import {
   IPqrsdfFilters,
   IPqrsdf,
+  IPqrsdfFiltersResponsesPQRSDF,
 } from "App/Interfaces/CitizenAttentionInterfaces";
 import { IPagingData, ApiResponse } from "App/Utils/ApiResponses";
 import axios, { AxiosInstance } from "axios";
-
 
 export interface ICitizenAttentionService {
   getPqrsdfPaginated(
     filters: IPqrsdfFilters
   ): Promise<ApiResponse<IPagingData<IPqrsdf>>>;
-  getPrograms(): Promise<ApiResponse<any>>
+  getPrograms(): Promise<ApiResponse<any>>;
+  getResponsesPqrsdf(
+    filters: IPqrsdfFiltersResponsesPQRSDF
+  ): Promise<ApiResponse<IPagingData<IPqrsdf>>>;
 }
 
 export default class CitizenAttentionService
-  implements ICitizenAttentionService {
+  implements ICitizenAttentionService
+{
   private axiosInstance: AxiosInstance;
 
   constructor() {
@@ -51,14 +55,40 @@ export default class CitizenAttentionService
   }
 
   public async getPrograms(): Promise<ApiResponse<any>> {
-    const urlConsumer = "/get-Programs"
+    const urlConsumer = "/get-Programs";
 
     try {
       const res = await this.axiosInstance.get<ApiResponse<any>>(urlConsumer, {
         headers: {
           Authorization: process.env.CURRENT_AUTHORIZATION,
         },
-      })
+      });
+      return res.data;
+    } catch (error) {
+      return new ApiResponse(
+        { array: [], meta: { total: 0 } },
+        EResponseCodes.FAIL,
+        String(error)
+      );
+    }
+  }
+
+  public async getResponsesPqrsdf(
+    filters: IPqrsdfFiltersResponsesPQRSDF
+  ): Promise<ApiResponse<IPagingData<IPqrsdf>>> {
+    const urlConsumer = `/api/v1/pqrsdf/get-responses`;
+
+    try {
+      const res = await this.axiosInstance.post<
+        ApiResponse<IPagingData<IPqrsdf>>
+      >(urlConsumer, filters, {
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          Authorization: process.env.CURRENT_AUTHORIZATION,
+          // permissions: Env.get("CURRENT_PERMISSIONS"),
+        },
+      });
       return res.data;
     } catch (error) {
       return new ApiResponse(

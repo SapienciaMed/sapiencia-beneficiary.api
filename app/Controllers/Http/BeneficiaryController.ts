@@ -8,14 +8,20 @@ import {
   IBenefitsFilter,
   // ISocialServicesFound,
 } from "App/Interfaces/BeneficiaryInterfaces";
-import { IPqrsdfFilters } from "App/Interfaces/CitizenAttentionInterfaces";
+import {
+  IPqrsdfFilters,
+  IPqrsdfFiltersResponsesPQRSDF,
+} from "App/Interfaces/CitizenAttentionInterfaces";
 import { ApiResponse } from "App/Utils/ApiResponses";
 import { DBException } from "App/Utils/DbHandlerError";
 // import { socialServicesSchema } from "App/Validators/SocialServicesSchemas";
 import { filterAttentionsSchema } from "App/Validators/filterAttentionsSchema";
 import { filtersBeneficiarySchema } from "App/Validators/filterBeneficiarySchema";
 import { filterBenfitsSchema } from "App/Validators/filterBenfitisSchema";
-import { filterPQRSDFSchema } from "App/Validators/filterPQRSDFSchema";
+import {
+  filterPQRSDFSchema,
+  filterResponsesPQRSDFSchema,
+} from "App/Validators/filterPQRSDFSchema";
 import { DateTime } from "luxon";
 
 export default class BeneficiaryController {
@@ -64,12 +70,12 @@ export default class BeneficiaryController {
     }
 
     try {
-      const resp = await BeneficiaryProvider.generateXLSXBeneficiary(filters)
+      const resp = await BeneficiaryProvider.generateXLSXBeneficiary(filters);
       response.header(
         "Content-Disposition",
         "attachment; filename=Beneficiarios.xlsx"
-      )
-      return response.download(resp.data)
+      );
+      return response.download(resp.data);
     } catch (err) {
       logger.error(err);
       const apiResp = new ApiResponse(null, EResponseCodes.FAIL, err.message);
@@ -89,10 +95,10 @@ export default class BeneficiaryController {
     try {
       const res = await BeneficiaryProvider.getPqrsdfPaginated(payload);
 
-      res.data.array.forEach(element => {
-        element.createdAt = DateTime.fromISO(element.createdAt!).setLocale('fr').toLocaleString(
-          DateTime.DATE_SHORT
-        );
+      res.data.array.forEach((element) => {
+        element.createdAt = DateTime.fromISO(element.createdAt!)
+          .setLocale("fr")
+          .toLocaleString(DateTime.DATE_SHORT);
       });
       return response.ok(res);
     } catch (err) {
@@ -124,7 +130,7 @@ export default class BeneficiaryController {
 
   public async getBeneftisPaginated(ctx: HttpContextContract) {
     const { request, response, logger } = ctx;
-    let payload: IBenefitsFilter
+    let payload: IBenefitsFilter;
     try {
       payload = await request.validate({ schema: filterBenfitsSchema });
     } catch (err) {
@@ -132,8 +138,9 @@ export default class BeneficiaryController {
     }
 
     try {
-      const BenefitsBeneficiary = await BeneficiaryProvider.getBeneftisPaginated(payload);
-      return response.ok(BenefitsBeneficiary)
+      const BenefitsBeneficiary =
+        await BeneficiaryProvider.getBeneftisPaginated(payload);
+      return response.ok(BenefitsBeneficiary);
     } catch (err) {
       logger.error(err);
       const apiResp = new ApiResponse(null, EResponseCodes.FAIL, err.message);
@@ -145,8 +152,12 @@ export default class BeneficiaryController {
     const { request, response, logger } = ctx;
     const { document, foundId, periodId } = request.body();
     try {
-      const BenefitsBeneficiary = await BeneficiaryProvider.getSocialServices(document, foundId, periodId);
-      return response.ok(BenefitsBeneficiary)
+      const BenefitsBeneficiary = await BeneficiaryProvider.getSocialServices(
+        document,
+        foundId,
+        periodId
+      );
+      return response.ok(BenefitsBeneficiary);
     } catch (err) {
       logger.error(err);
       const apiResp = new ApiResponse(null, EResponseCodes.FAIL, err.message);
@@ -174,12 +185,31 @@ export default class BeneficiaryController {
     }
 
     try {
-      const resp = await BeneficiaryProvider.generateXLSXPqrsdf(payload)
+      const resp = await BeneficiaryProvider.generateXLSXPqrsdf(payload);
       response.header(
         "Content-Disposition",
         "attachment; filename=PQRSDF.xlsx"
-      )
-      return response.download(resp.data)
+      );
+      return response.download(resp.data);
+    } catch (err) {
+      logger.error(err);
+      const apiResp = new ApiResponse(null, EResponseCodes.FAIL, err.message);
+      return response.badRequest(apiResp);
+    }
+  }
+
+  public async getResponsesPQRSDF(ctx: HttpContextContract) {
+    const { request, response, logger } = ctx;
+    let payload: IPqrsdfFiltersResponsesPQRSDF;
+    try {
+      payload = await request.validate({ schema: filterResponsesPQRSDFSchema });
+    } catch (err) {
+      return DBException.badRequest(ctx, err);
+    }
+
+    try {
+      const res = await BeneficiaryProvider.getResponsesPqrsdf(payload);
+      return response.ok(res);
     } catch (err) {
       logger.error(err);
       const apiResp = new ApiResponse(null, EResponseCodes.FAIL, err.message);

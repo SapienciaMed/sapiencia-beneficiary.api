@@ -10,11 +10,11 @@ import {
   IBenefitsFilter,
   // ISocialServicesFound,
   ISocialServices,
-
 } from "App/Interfaces/BeneficiaryInterfaces";
 import {
   IPqrsdf,
   IPqrsdfFilters,
+  IPqrsdfFiltersResponsesPQRSDF,
 } from "App/Interfaces/CitizenAttentionInterfaces";
 import BeneficiaryRepository from "App/Repositories/BeneficiaryRepository";
 import { ApiResponse, IPagingData } from "App/Utils/ApiResponses";
@@ -46,17 +46,20 @@ export interface IBenficiaryService {
     document: string,
     foundId: number,
     periodId: number
-  ): Promise<ApiResponse<ISocialServices>>
+  ): Promise<ApiResponse<ISocialServices>>;
 
-  getPrograms(): Promise<ApiResponse<any>>
-  generateXLSXPqrsdf(filters: IPqrsdfFilters): Promise<ApiResponse<any>>
+  getPrograms(): Promise<ApiResponse<any>>;
+  generateXLSXPqrsdf(filters: IPqrsdfFilters): Promise<ApiResponse<any>>;
+  getResponsesPqrsdf(
+    filters: IPqrsdfFiltersResponsesPQRSDF
+  ): Promise<ApiResponse<IPagingData<IPqrsdf>>>;
 }
 
 export default class BeneficiaryService implements IBenficiaryService {
   constructor(
     private beneficiaryRepository: BeneficiaryRepository,
     private citizenAttentionService: ICitizenAttentionService
-  ) { }
+  ) {}
 
   public async getAllBeneficiarysPaginated(payload: IBeneficiaryFilter) {
     const res = await this.beneficiaryRepository.getBeneficiaryPaginated(
@@ -132,7 +135,9 @@ export default class BeneficiaryService implements IBenficiaryService {
   }
 
   public async generateXLSXPqrsdf(filters: IPqrsdfFilters) {
-    const pqrsdf = await this.citizenAttentionService.getPqrsdfPaginated(filters);
+    const pqrsdf = await this.citizenAttentionService.getPqrsdfPaginated(
+      filters
+    );
 
     const columns = [
       {
@@ -203,14 +208,25 @@ export default class BeneficiaryService implements IBenficiaryService {
     return new ApiResponse(res, EResponseCodes.OK);
   }
 
-  public async getSocialServices(document: string,
+  public async getSocialServices(
+    document: string,
     foundId: number,
-    periodId: number) {
-    const res = await this.beneficiaryRepository.getSocialServices(document, foundId, periodId)
-    return new ApiResponse(res, EResponseCodes.OK)
+    periodId: number
+  ) {
+    const res = await this.beneficiaryRepository.getSocialServices(
+      document,
+      foundId,
+      periodId
+    );
+    return new ApiResponse(res, EResponseCodes.OK);
   }
 
   public async getPrograms(): Promise<ApiResponse<any>> {
-    return await this.citizenAttentionService.getPrograms()
+    return await this.citizenAttentionService.getPrograms();
+  }
+  public async getResponsesPqrsdf(
+    filters: IPqrsdfFiltersResponsesPQRSDF
+  ): Promise<ApiResponse<IPagingData<IPqrsdf>>> {
+    return await this.citizenAttentionService.getResponsesPqrsdf(filters);
   }
 }

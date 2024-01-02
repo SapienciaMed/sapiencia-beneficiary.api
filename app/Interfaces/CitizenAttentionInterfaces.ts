@@ -31,7 +31,7 @@ export interface IPqrsdf {
   responsible?: IWorkEntity;
   status?: IPqrsdfStatus;
   requestSubject?: IRequestSubject;
-  program?: IProgram
+  program?: IProgram;
   file?: IFile;
   createdAt?: string;
   updatedAt?: DateTime;
@@ -139,7 +139,6 @@ export interface ILegalEntityType {
   tej_activo: boolean;
   tej_orden: number;
 }
-
 
 export interface IUser {
   id?: number;
@@ -260,4 +259,9 @@ export interface IAffair {
   aso_activo?: boolean;
   aso_orden?: number;
   affairProgramId?: number;
+}
+export interface IPqrsdfFiltersResponsesPQRSDF {
+  page: number;
+  perPage: number;
+  pqrsdfId: number;
 }
